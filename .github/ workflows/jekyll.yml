@@ -1,0 +1,24 @@
+name: Jekyll site CI
+
+on: [push]
+- имя: кэш
+  использует: actions/cache@v1.0.3
+  с:
+    # Каталог для хранения и сохранения кэша
+    путь: 
+    # Явный ключ для восстановления и сохранения кеша
+    ключ: 
+    # Упорядоченный список ключей для восстановления кеша, если для ключа не произошло попадания в кеш
+    Ключи восстановления: # необязательно
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the site in the jekyll/builder container
+      run: |
+        docker run \
+        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
+        jekyll/builder:latest /bin/bash -c "chmod 777 /srv/jekyll && jekyll build --future"
